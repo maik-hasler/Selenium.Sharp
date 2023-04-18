@@ -1,0 +1,41 @@
+name: NuGet
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v[0-9].[0-9].[0-9]'
+      - 'v[0-9].[0-9].[0-9]+preview.[0-9]'
+
+env:
+  PROJECT_PATH: src/SeleniumSharper.csproj
+  PACKAGE_OUTPUT_PATH: ${{ github.workspace }}\output
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build project
+        run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+
+      - name: Get version
+        id: version
+        uses: battila7/get-version-action@v2
+
+      - name: Pack project
+        run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:PackageVersion=${{ steps.version.outputs.versions-without-v }} --output ${{ env.PACKAGE_OUTPUT_PATH }}
+
+      - name: Push package
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}\*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
