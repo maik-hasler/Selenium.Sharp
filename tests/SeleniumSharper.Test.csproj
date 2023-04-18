@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\SeleniumSharp.csproj" />
+    <ProjectReference Include="..\src\SeleniumSharper.csproj" />
   </ItemGroup>
 
 </Project>
