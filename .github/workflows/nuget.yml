@@ -3,8 +3,7 @@ name: NuGet
 on:
   push:
     tags:
-      - 'v[0-9].[0-9].[0-9]'
-      - 'v[0-9].[0-9].[0-9]+preview.[0-9]'
+      - 'v\d\.\d\.\d(-preview\.\d)?'
 
 env:
   PROJECT_PATH: src/SeleniumSharper.csproj
