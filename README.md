@@ -1,1 +1,1 @@
-# Selenium.Sharp
+# SeleniumSharper
