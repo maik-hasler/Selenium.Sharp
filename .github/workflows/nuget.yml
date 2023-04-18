@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_PATH: src/SeleniumSharper.csproj
-  PACKAGE_OUTPUT_PATH: ${{ github.workspace }}\output
+  PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/output
 
 jobs:
   deploy:
@@ -28,12 +28,12 @@ jobs:
       - name: Build project
         run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
 
-      - name: Get version
+      - name: Get Version
         id: version
         uses: battila7/get-version-action@v2
 
       - name: Pack project
-        run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:PackageVersion=${{ steps.version.outputs.versions-without-v }} --output ${{ env.PACKAGE_OUTPUT_PATH }}
+        run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_PATH }}
 
       - name: Push package
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}\*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
