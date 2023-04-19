@@ -1,5 +1,6 @@
 # SeleniumSharper
 ![Build & Test](https://img.shields.io/github/actions/workflow/status/maik-hasler/SeleniumSharper/dotnet.yml?branch=main&label=Build%20%26%20Tests)
+![NuGet Downloads](https://img.shields.io/nuget/dt/SeleniumSharper)
 
 SeleniumSharper is a powerful, lightweight tool that makes working with Selenium much easier. By offering a set of useful extensions and tools, it enhances the experience of working with Selenium.
 
