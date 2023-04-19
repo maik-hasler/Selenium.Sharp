@@ -1,35 +1,64 @@
 ﻿using OpenQA.Selenium;
 
-namespace Selenium.Sharp;
+namespace SeleniumSharper;
 
-public class WebElementConditionBuilder<TSearchContext, TSearchResult> 
-    where TSearchContext : ISearchContext 
+public class WebElementConditionBuilder<TSearchContext, TSearchResult>
+    where TSearchContext : ISearchContext
     where TSearchResult : IWebElement
 {
-    private readonly ContextualWait<TSearchContext> _fluentWait;
+    private readonly ContextualWait<TSearchContext> _contextualWait;
 
     private readonly Func<TSearchContext, IWebElement> _action;
 
     public WebElementConditionBuilder(ContextualWait<TSearchContext> fluentWait, Func<TSearchContext, IWebElement> action)
     {
-        _fluentWait = fluentWait;
+        _contextualWait = fluentWait;
         _action = action;
     }
 
-    public bool IsVisible()
+    public VisibilityResult IsVisible()
     {
         try
         {
-            return _fluentWait.Wait.Until(ctx =>
-            {
-                var element = _action.Invoke(ctx);
+            IWebElement? webElement = null;
 
-                return element.Displayed;
+            var isDisplayed = _contextualWait.Wait.Until(ctx =>
+            {
+                webElement = _action.Invoke(ctx);
+
+                return webElement.Displayed;
             });
+
+            return new VisibilityResult
+            {
+                WebElement = webElement,
+                IsVisible = isDisplayed
+            };
         }
         catch (WebDriverTimeoutException)
         {
-            return false;
+            return new VisibilityResult
+            {
+                WebElement = null,
+                IsVisible = false
+            };
         }
+    }
+
+    public class VisibilityResult
+    {
+        public IWebElement? WebElement { get; set; }
+
+        public bool IsVisible { get; set; }
+    }
+
+    public TResult Satisfies<TResult>(Func<IWebElement, TResult> condition)
+    {
+        return _contextualWait.Wait.Until(ctx =>
+        {
+            var value = _action.Invoke(ctx);
+
+            return condition(value);
+        });
     }
 }

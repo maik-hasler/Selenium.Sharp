@@ -1,6 +1,5 @@
 ﻿using Moq;
 using OpenQA.Selenium;
-using Selenium.Sharp;
 using Xunit;
 
 namespace SeleniumSharper.Test;

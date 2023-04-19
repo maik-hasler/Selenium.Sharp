@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using Xunit;
 using FluentAssertions;
+using SeleniumSharper;
 
 namespace Selenium.Sharp.Test;
 

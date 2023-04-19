@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace Selenium.Sharp;
+namespace SeleniumSharper;
 
 public sealed class ContextualWait<TSearchContext>
     where TSearchContext : ISearchContext

@@ -28,7 +28,7 @@ public sealed class WebElementConditionBuilderTests
         var result = builder.IsVisible();
 
         // Assert
-        result.Should().BeTrue();
+        result.IsVisible.Should().BeTrue();
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public sealed class WebElementConditionBuilderTests
         var result = builder.IsVisible();
 
         // Assert
-        result.Should().BeFalse();
+        result.IsVisible.Should().BeFalse();
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public sealed class WebElementConditionBuilderTests
         var result = builder.IsVisible();
 
         // Assert
-        result.Should().BeTrue();
+        result.IsVisible.Should().BeTrue();
         element.VerifyGet(e => e.Displayed, Times.Exactly(2));
     }
 }

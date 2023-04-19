@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using Selenium.Sharp;
 
 namespace SeleniumSharper;
 
