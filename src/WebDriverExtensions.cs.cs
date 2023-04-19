@@ -1,8 +1,8 @@
 ﻿using OpenQA.Selenium;
 
-namespace Selenium.Sharp.Extensions;
+namespace SeleniumSharper;
 
-internal static class WebDriverExtensions
+public static class WebDriverExtensions
 {
     public static IJavaScriptExecutor Scripts(this IWebDriver webDriver)
     {

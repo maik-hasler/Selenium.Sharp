@@ -1,8 +1,8 @@
 ﻿using OpenQA.Selenium;
 
-namespace Selenium.Sharp.Extensions;
+namespace SeleniumSharper;
 
-internal static class JavaScriptExecutorExtensions
+public static class JavaScriptExecutorExtensions
 {
     public static void Click(this IJavaScriptExecutor executor, IWebElement elementToBeClicked)
     {
