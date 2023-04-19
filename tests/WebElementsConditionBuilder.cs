@@ -33,7 +33,7 @@ public sealed class WebElementsConditionBuilderTests
         var result = builder.AreVisible();
 
         // Assert
-        result.Should().BeTrue();
+        result.AreDisplayed.Should().BeTrue();
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public sealed class WebElementsConditionBuilderTests
         var result = builder.AreVisible();
 
         // Assert
-        result.Should().BeFalse();
+        result.AreDisplayed.Should().BeFalse();
     }
 
     [Fact]
@@ -89,6 +89,6 @@ public sealed class WebElementsConditionBuilderTests
         var result = builder.AreVisible();
 
         // Assert
-        result.Should().BeTrue();
+        result.AreDisplayed.Should().BeTrue();
     }
 }

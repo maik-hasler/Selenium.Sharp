@@ -16,7 +16,7 @@ public class WebElementConditionBuilder<TSearchContext, TSearchResult>
         _action = action;
     }
 
-    public VisibilityResult IsVisible()
+    public WebElementVisibilityResult IsVisible()
     {
         try
         {
@@ -29,7 +29,7 @@ public class WebElementConditionBuilder<TSearchContext, TSearchResult>
                 return webElement.Displayed;
             });
 
-            return new VisibilityResult
+            return new WebElementVisibilityResult
             {
                 WebElement = webElement,
                 IsVisible = isDisplayed
@@ -37,19 +37,12 @@ public class WebElementConditionBuilder<TSearchContext, TSearchResult>
         }
         catch (WebDriverTimeoutException)
         {
-            return new VisibilityResult
+            return new WebElementVisibilityResult
             {
                 WebElement = null,
                 IsVisible = false
             };
         }
-    }
-
-    public class VisibilityResult
-    {
-        public IWebElement? WebElement { get; set; }
-
-        public bool IsVisible { get; set; }
     }
 
     public TResult Satisfies<TResult>(Func<IWebElement, TResult> condition)

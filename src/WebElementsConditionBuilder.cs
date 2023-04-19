@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using SeleniumSharper.Models;
 using System.Collections.ObjectModel;
 
 namespace SeleniumSharper;
@@ -17,20 +18,32 @@ public sealed class WebElementsConditionBuilder<TSearchContext, TSearchResult>
         _action = action;
     }
 
-    public bool AreVisible()
+    public WebElementsVisibilityResult AreVisible()
     {
         try
         {
-            return _contextualWait.Wait.Until(ctx =>
-            {
-                var elements = _action.Invoke(ctx);
+            ReadOnlyCollection<IWebElement>? webElements = null;
 
-                return elements.All(e => e.Displayed);
+            var areDisplayed = _contextualWait.Wait.Until(ctx =>
+            {
+                webElements = _action.Invoke(ctx);
+
+                return webElements.All(e => e.Displayed);
             });
+
+            return new WebElementsVisibilityResult
+            {
+                WebElements = webElements,
+                AreDisplayed = areDisplayed
+            };
         }
         catch (WebDriverTimeoutException)
         {
-            return false;
+            return new WebElementsVisibilityResult
+            {
+                WebElements = null,
+                AreDisplayed = false
+            };
         }
     }
 
