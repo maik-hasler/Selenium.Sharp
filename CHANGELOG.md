@@ -1,15 +1,24 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## v1.0.0
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased](https://github.com/maik-hasler/SeleniumSharper/compare/v1.0.0...HEAD)
+
+## [v1.0.0](https://github.com/maik-hasler/SeleniumSharper/releases/tag/v1.0.0)
 **Published:** 19th April 2023
 ### Added
+- `WebElementsConditionBuilder<TSearchContext, TSearchResult>` to build wait conditions for a `ReadOnlyCollection<IWebElement>`
+- `WebElementConditionBuilder<TSearchContext, TSearchResult>` to build wait conditions for a `IWebElement`
+- `ClassConditionBuilder<TSearchContext, TSearchResult>` to build wait conditions for a `IEquatable<string>`
+- Custom result classes `WebElementsVisibilityResult` and `WebElementVisibilityResult`
 ### Changed
-- Changes `Waiter<T>` to `ContextualWait<TSearchContext>`, which allows
+- Changed `Waiter<T>` to `ContextualWait<TSearchContext>`, which supports more generic method chaining
 ### Removed
 - Collection of commonly used selenium wait conditions
 
-## v1.0.0-preview.0
+## [v1.0.0-preview.0](https://github.com/maik-hasler/SeleniumSharper/releases/tag/v1.0.0-preview.0)
 **Published:** 18th April 2023
 <br />
 **Disclaimer:** This is a pre-release. It was published in order to verify, that the nuget.yml workflow works fine.
