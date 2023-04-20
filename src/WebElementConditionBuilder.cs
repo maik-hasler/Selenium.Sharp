@@ -16,32 +16,24 @@ public class WebElementConditionBuilder<TSearchContext, TSearchResult>
         _action = action;
     }
 
-    public WebElementVisibilityResult IsVisible()
+    public IWebElement? IsVisible()
     {
+        IWebElement? webElement = null;
+
         try
         {
-            IWebElement? webElement = null;
-
-            var isDisplayed = _contextualWait.Wait.Until(ctx =>
+            _contextualWait.Wait.Until(ctx =>
             {
                 webElement = _action.Invoke(ctx);
 
                 return webElement.Displayed;
             });
 
-            return new WebElementVisibilityResult
-            {
-                WebElement = webElement,
-                IsVisible = isDisplayed
-            };
+            return webElement;
         }
         catch (WebDriverTimeoutException)
         {
-            return new WebElementVisibilityResult
-            {
-                WebElement = null,
-                IsVisible = false
-            };
+            return null;
         }
     }
 
