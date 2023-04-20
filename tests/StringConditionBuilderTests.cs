@@ -1,8 +1,8 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using OpenQA.Selenium;
-using Xunit;
-using FluentAssertions;
 using SeleniumSharper.Conditions;
+using Xunit;
 
 namespace SeleniumSharper.Test;
 
