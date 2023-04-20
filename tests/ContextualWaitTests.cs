@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using OpenQA.Selenium;
+using SeleniumSharper.Conditions;
 using Xunit;
 
 namespace SeleniumSharper.Test;
@@ -42,6 +43,6 @@ public sealed class ContextualWaitTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().BeOfType<ClassConditionBuilder<IWebDriver, string>>();
+        result.Should().BeOfType<StringConditionBuilder<IWebDriver, string>>();
     }
 }

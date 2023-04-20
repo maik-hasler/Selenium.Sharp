@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using OpenQA.Selenium;
-using Selenium.Sharp;
+using SeleniumSharper.Conditions;
 using Xunit;
 
 namespace SeleniumSharper.Test;

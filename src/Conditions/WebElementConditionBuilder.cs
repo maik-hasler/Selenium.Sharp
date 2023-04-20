@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace SeleniumSharper;
+namespace SeleniumSharper.Conditions;
 
 public class WebElementConditionBuilder<TSearchContext, TSearchResult>
     where TSearchContext : ISearchContext

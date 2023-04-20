@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using OpenQA.Selenium;
+using SeleniumSharper.Conditions;
 using System.Collections.ObjectModel;
 using Xunit;
 

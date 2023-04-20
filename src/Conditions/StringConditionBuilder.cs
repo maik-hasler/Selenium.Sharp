@@ -1,8 +1,8 @@
 ﻿using OpenQA.Selenium;
 
-namespace SeleniumSharper;
+namespace SeleniumSharper.Conditions;
 
-public class ClassConditionBuilder<TSearchContext, TSearchResult>
+public class StringConditionBuilder<TSearchContext, TSearchResult>
     where TSearchContext : ISearchContext
     where TSearchResult : IEquatable<string>
 {
@@ -10,7 +10,7 @@ public class ClassConditionBuilder<TSearchContext, TSearchResult>
 
     private readonly Func<TSearchContext, string> _action;
 
-    public ClassConditionBuilder(ContextualWait<TSearchContext> fluentWait, Func<TSearchContext, string> action)
+    public StringConditionBuilder(ContextualWait<TSearchContext> fluentWait, Func<TSearchContext, string> action)
     {
         _contextualWait = fluentWait;
         _action = action;
