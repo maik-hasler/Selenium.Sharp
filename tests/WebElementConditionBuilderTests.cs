@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using OpenQA.Selenium;
-using Selenium.Sharp;
+using SeleniumSharper.Conditions;
 using Xunit;
 
 namespace SeleniumSharper.Test;
@@ -28,7 +28,7 @@ public sealed class WebElementConditionBuilderTests
         var result = builder.IsVisible();
 
         // Assert
-        result.IsVisible.Should().BeTrue();
+        result.Should().NotBeNull();
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public sealed class WebElementConditionBuilderTests
         var result = builder.IsVisible();
 
         // Assert
-        result.IsVisible.Should().BeFalse();
+        result.Should().BeNull();
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public sealed class WebElementConditionBuilderTests
         var result = builder.IsVisible();
 
         // Assert
-        result.IsVisible.Should().BeTrue();
+        result.Should().NotBeNull();
         element.VerifyGet(e => e.Displayed, Times.Exactly(2));
     }
 }

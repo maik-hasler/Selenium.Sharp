@@ -1,8 +1,7 @@
 ﻿using OpenQA.Selenium;
-using SeleniumSharper.Models;
 using System.Collections.ObjectModel;
 
-namespace SeleniumSharper;
+namespace SeleniumSharper.Conditions;
 
 public sealed class WebElementsConditionBuilder<TSearchContext, TSearchResult>
     where TSearchContext : ISearchContext
@@ -18,32 +17,24 @@ public sealed class WebElementsConditionBuilder<TSearchContext, TSearchResult>
         _action = action;
     }
 
-    public WebElementsVisibilityResult AreVisible()
+    public ReadOnlyCollection<IWebElement>? AreVisible()
     {
+        ReadOnlyCollection<IWebElement>? webElements = null;
+
         try
         {
-            ReadOnlyCollection<IWebElement>? webElements = null;
-
-            var areDisplayed = _contextualWait.Wait.Until(ctx =>
+            _contextualWait.Wait.Until(ctx =>
             {
                 webElements = _action.Invoke(ctx);
 
                 return webElements.All(e => e.Displayed);
             });
 
-            return new WebElementsVisibilityResult
-            {
-                WebElements = webElements,
-                AreDisplayed = areDisplayed
-            };
+            return webElements;
         }
         catch (WebDriverTimeoutException)
         {
-            return new WebElementsVisibilityResult
-            {
-                WebElements = null,
-                AreDisplayed = false
-            };
+            return null;
         }
     }
 

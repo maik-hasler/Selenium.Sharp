@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumSharper.Conditions;
 
 namespace SeleniumSharper;
 
@@ -27,8 +28,8 @@ public sealed class ContextualWait<TSearchContext>
         return new WebElementConditionBuilder<TSearchContext, IWebElement>(this, action);
     }
 
-    public ClassConditionBuilder<TSearchContext, string> Until(Func<TSearchContext, string> action)
+    public StringConditionBuilder<TSearchContext, string> Until(Func<TSearchContext, string> action)
     {
-        return new ClassConditionBuilder<TSearchContext, string>(this, action);
+        return new StringConditionBuilder<TSearchContext, string>(this, action);
     }
 }

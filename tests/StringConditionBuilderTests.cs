@@ -1,16 +1,16 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using OpenQA.Selenium;
+using SeleniumSharper.Conditions;
 using Xunit;
-using FluentAssertions;
-using SeleniumSharper;
 
-namespace Selenium.Sharp.Test;
+namespace SeleniumSharper.Test;
 
-public sealed class ClassConditionBuilderTests
+public sealed class StringConditionBuilderTests
 {
     private readonly Mock<IWebDriver> _webDriver;
 
-    public ClassConditionBuilderTests()
+    public StringConditionBuilderTests()
     {
         _webDriver = new Mock<IWebDriver>();
     }
@@ -25,7 +25,7 @@ public sealed class ClassConditionBuilderTests
         {
             return expectedValue;
         });
-        var builder = new ClassConditionBuilder<IWebDriver, string>(fluentWait, action);
+        var builder = new StringConditionBuilder<IWebDriver, string>(fluentWait, action);
 
         // Act
         var result = builder.Satisfies(value => value.Equals(expectedValue));
@@ -44,7 +44,7 @@ public sealed class ClassConditionBuilderTests
         {
             return "Another Value";
         });
-        var builder = new ClassConditionBuilder<IWebDriver, string>(fluentWait, action);
+        var builder = new StringConditionBuilder<IWebDriver, string>(fluentWait, action);
 
         // Act & Assert
         Assert.Throws<WebDriverTimeoutException>(() =>
@@ -65,7 +65,7 @@ public sealed class ClassConditionBuilderTests
             return titleAccessCount == 1 ? "Wrong Title" : expectedTitle;
         });
 
-        var builder = new ClassConditionBuilder<IWebDriver, string>(
+        var builder = new StringConditionBuilder<IWebDriver, string>(
             new ContextualWait<IWebDriver>(_webDriver.Object, TimeSpan.FromSeconds(30)),
             context => context.Title
         );

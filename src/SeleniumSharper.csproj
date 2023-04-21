@@ -7,8 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="4.8.2" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.8.2" />
+    <PackageReference Include="Selenium.Support" Version="4.9.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.9.0" />
+    <PackageReference Include="SharpCompress" Version="0.33.0" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <Authors>maik-hasler</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/maik-hasler/SeleniumSharper</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/maik-hasler/SeleniumSharper</PackageProjectUrl>
+    <Description>SeleniumSharper is a powerful, lightweight tool that makes working with Selenium much easier. By offering a set of useful extensions and tools, it enhances the experience of working with Selenium.</Description>
+    <Title>SeleniumSharper</Title>
+  </PropertyGroup>
 
 </Project>
