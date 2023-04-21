@@ -4,7 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/maik-hasler/SeleniumSharper/compare/v1.0.0...HEAD)
+## [Unreleased](https://github.com/maik-hasler/SeleniumSharper/compare/v1.1.0...HEAD)
+
+## [v1.1.0](https://github.com/maik-hasler/SeleniumSharper/releases/tag/v1.1.0)
+**Published:** 21th April 2023
+### Added
+- `IWebDriverManager<TOptions>` and first implementation for Chrome to automatically install driver binaries
+- Helper classes related to `IWebDriverManager<TOptions>`
+- Enum and extension method to fire JavaScript event
+### Changed
+- Upgrade dependencies: Selenium.WebDriver, Selenium.Support etc.
+### Removed
+- Custom result classes
 
 ## [v1.0.0](https://github.com/maik-hasler/SeleniumSharper/releases/tag/v1.0.0)
 **Published:** 19th April 2023
