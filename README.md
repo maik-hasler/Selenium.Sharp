@@ -10,6 +10,8 @@ SeleniumSharper is a powerful, lightweight tool that makes working with Selenium
 - [Installation](#installation)
 - [Usage](#usage)
 - [Credits](#credits)
+    - [WebDriverManager.Net](#webdrivermanagernet)
+    - [DotNetSeleniumExtras](#dotnetseleniumextras)
 
 # Installation
 You should install [SeleniumSharper with NuGet](https://www.nuget.org/packages/SeleniumSharper):
