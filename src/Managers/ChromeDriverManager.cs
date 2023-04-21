@@ -1,10 +1,12 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using SeleniumSharper.Managers.Interfaces;
+using SeleniumSharper.Managers.Services;
 using System.Runtime.InteropServices;
 
 namespace SeleniumSharper.Managers;
 
-public sealed class ChromeDriverManager : WebDriverManagerBase, IWebDriverManager<ChromeOptions>
+public sealed class ChromeDriverManager : IWebDriverManager<ChromeOptions>
 {
     public IWebDriver Setup()
     {
@@ -15,21 +17,30 @@ public sealed class ChromeDriverManager : WebDriverManagerBase, IWebDriverManage
         return new ChromeDriver(chromeDriverService);
     }
 
-    protected override string GetBinaryName()
+    public IWebDriver Setup(ChromeOptions chromeOptions)
+    {
+        var driverPath = InstallBinary();
+
+        var chromeDriverService = ChromeDriverService.CreateDefaultService(driverPath);
+
+        return new ChromeDriver(chromeDriverService, chromeOptions);
+    }
+
+    private static string GetBinaryName()
     {
         var suffix = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".exe" : string.Empty;
 
         return $"chromedriver{suffix}";
     }
 
-    protected override Uri GetDownloadUrl(string version, string fileName)
+    private static Uri GetDownloadUrl(string version, string fileName)
     {
         var url = $"https://chromedriver.storage.googleapis.com/{version}/{fileName}";
 
         return new Uri(url);
     }
 
-    protected override string GetFileName()
+    private static string GetFileName()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
@@ -51,7 +62,7 @@ public sealed class ChromeDriverManager : WebDriverManagerBase, IWebDriverManage
         throw new PlatformNotSupportedException();
     }
 
-    protected override string GetLatestVersion()
+    private static string GetLatestVersion()
     {
         var url = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE";
 
@@ -60,5 +71,31 @@ public sealed class ChromeDriverManager : WebDriverManagerBase, IWebDriverManage
         var response = httpClient.GetStringAsync(url).Result;
 
         return response.Trim();
+    }
+
+    private static string GetBinaryPath(string version)
+    {
+        var architecture = Environment.Is64BitOperatingSystem ? "64" : "32";
+
+        return Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "Binaries",
+            "Chrome",
+            version,
+            architecture,
+            GetBinaryName());
+    }
+
+    private static string InstallBinary()
+    {
+        var version = GetLatestVersion();
+
+        var fileName = GetFileName();
+
+        var downloadUrl = GetDownloadUrl(version, fileName);
+
+        var binaryPath = GetBinaryPath(version);
+
+        return WebDriverManagerUtils.InstallBinary(fileName, downloadUrl, binaryPath, GetBinaryName());
     }
 }

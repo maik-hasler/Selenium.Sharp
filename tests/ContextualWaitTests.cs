@@ -8,9 +8,9 @@ namespace SeleniumSharper.Test;
 
 public sealed class ContextualWaitTests
 {
-    private Mock<IWebDriver> _searchContext;
+    private readonly Mock<IWebDriver> _searchContext;
 
-    private TimeSpan _timeout;
+    private readonly TimeSpan _timeout;
 
     public ContextualWaitTests()
     {
