@@ -9,6 +9,7 @@ SeleniumSharper is a powerful, lightweight tool that makes working with Selenium
 - [Table of contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Credits](#credits)
 
 # Installation
 You should install [SeleniumSharper with NuGet](https://www.nuget.org/packages/SeleniumSharper):
@@ -27,3 +28,9 @@ var title = driver.Wait(30)
     .Until(ctx => ctx.Title)
     .Satisfies(title => title.Equals("My awesome title"));
 ```
+# Credits
+I would like to give credit to the following resources that have inspired this project.
+## [WebDriverManager.Net](https://github.com/rosolko/WebDriverManager.Net)
+The idea for automatically downloading and installing driver binaries was inspired by the repository [WebDriverManager.Net](https://github.com/rosolko/WebDriverManager.Net). However, this project uses a slightly different approach by creating a driver manager that returns the instance of the `IWebDriver`, making it even easier to work with it.
+## [DotNetSeleniumExtras](https://github.com/DotNetSeleniumTools/DotNetSeleniumExtras)
+The idea for implementing an enhanced methodology to wait for conditions to be satisfied in Selenium was inspired by the repository [DotNetSeleniumExtras](https://github.com/DotNetSeleniumTools/DotNetSeleniumExtras). Fascinated by the concept, I developed my own implementation. The waiting methods included in this library are designed to resemble a sentence and are capable of accepting `Func<>` delegates, thereby increasing their flexibility and variety.
