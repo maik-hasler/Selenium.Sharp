@@ -1,12 +1,14 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using SeleniumSharper.Managers.Common;
+using SeleniumSharper.Managers.Enums;
 using SeleniumSharper.Managers.Interfaces;
-using SeleniumSharper.Managers.Services;
+using System;
 using System.Runtime.InteropServices;
 
 namespace SeleniumSharper.Managers;
 
-public sealed class ChromeDriverManager : IWebDriverManager<ChromeOptions>
+public sealed class ChromeDriverManager : IWebDriverSetupManager<ChromeOptions, ChromeDriverService>
 {
     public IWebDriver Setup()
     {
@@ -24,6 +26,56 @@ public sealed class ChromeDriverManager : IWebDriverManager<ChromeOptions>
         var chromeDriverService = ChromeDriverService.CreateDefaultService(driverPath);
 
         return new ChromeDriver(chromeDriverService, chromeOptions);
+    }
+
+    public IWebDriver Setup(VersionResolveStrategy versionResolveStrategy)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IWebDriver Setup(VersionResolveStrategy versionResolveStrategy, ChromeOptions options)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IWebDriver Setup(ChromeDriverService driverService)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IWebDriver Setup(ChromeDriverService driverService, ChromeOptions driverOptions)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IWebDriver Setup(string driverVersion)
+    {
+        var fileName = GetFileName();
+
+        var downloadUrl = GetDownloadUrl(driverVersion, fileName);
+
+        var binaryPath = GetBinaryPath(driverVersion);
+
+        var driverPath = BinaryService.InstallBinary(fileName, downloadUrl, binaryPath, GetBinaryName());
+
+        var chromeDriverService = ChromeDriverService.CreateDefaultService(driverPath);
+
+        return new ChromeDriver(chromeDriverService);
+    }
+
+    public IWebDriver Setup(string driverVersion, ChromeOptions driverOptions)
+    {
+        var fileName = GetFileName();
+
+        var downloadUrl = GetDownloadUrl(driverVersion, fileName);
+
+        var binaryPath = GetBinaryPath(driverVersion);
+
+        var driverPath = BinaryService.InstallBinary(fileName, downloadUrl, binaryPath, GetBinaryName());
+
+        var chromeDriverService = ChromeDriverService.CreateDefaultService(driverPath);
+
+        return new ChromeDriver(chromeDriverService, driverOptions);
     }
 
     private static string GetBinaryName()
@@ -96,6 +148,6 @@ public sealed class ChromeDriverManager : IWebDriverManager<ChromeOptions>
 
         var binaryPath = GetBinaryPath(version);
 
-        return WebDriverManagerUtils.InstallBinary(fileName, downloadUrl, binaryPath, GetBinaryName());
+        return BinaryService.InstallBinary(fileName, downloadUrl, binaryPath, GetBinaryName());
     }
 }

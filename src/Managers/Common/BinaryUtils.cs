@@ -1,55 +1,28 @@
-﻿using SharpCompress.Archives;
-using SharpCompress.Common;
+﻿using SeleniumSharper.Managers.Common;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace SeleniumSharper.Managers.Services;
 
-public static class WebDriverManagerUtils
+public static class BinaryService
 {
     public static string InstallBinary(string fileName, Uri downloadUrl, string binaryPath, string binaryName)
     {
-        var temporaryDirectory = WebDriverManagerUtils.CreateTemporaryDirectory();
+        var temporaryDirectory = CreateTemporaryDirectory();
 
         var archivePath = Path.Combine(temporaryDirectory.FullName, fileName);
 
-        WebDriverManagerUtils.DownloadBinary(downloadUrl, archivePath);
+        DownloadBinary(downloadUrl, archivePath);
 
         Directory.CreateDirectory(binaryPath);
 
-        WebDriverManagerUtils.ExtractArchive(archivePath, binaryPath, binaryName);
+        ArchiveUtils.ExtractArchive(archivePath, binaryPath, binaryName);
 
         temporaryDirectory.Delete(true);
 
-        WebDriverManagerUtils.GrantPermissionsIfNeeded(binaryPath);
+        GrantPermissionsIfNeeded(binaryPath);
 
         return binaryPath;
-    }
-
-    public static void ExtractArchive(string archivePath, string destinationPath, string binaryName)
-    {
-        var suffix = Path.GetExtension(archivePath);
-
-        if (suffix.Equals(".exe", StringComparison.OrdinalIgnoreCase))
-        {
-            File.Copy(archivePath, destinationPath);
-
-            return;
-        }
-
-        if (suffix.Equals(".zip", StringComparison.OrdinalIgnoreCase) || suffix.Equals(".tar.gz", StringComparison.OrdinalIgnoreCase))
-        {
-            using var archive = ArchiveFactory.Open(archivePath);
-
-            foreach (var entry in archive.Entries.Where(entry => Path.GetFileName(entry.Key).Equals(binaryName, StringComparison.OrdinalIgnoreCase)))
-            {
-                entry.WriteToDirectory(destinationPath, new ExtractionOptions()
-                {
-                    ExtractFullPath = true,
-                    Overwrite = true
-                });
-            }
-        }
     }
 
     public static void GrantPermissionsIfNeeded(string binaryPath)
