@@ -1,98 +1,24 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using SeleniumSharper.Managers.Common;
+﻿using OpenQA.Selenium.Chrome;
 using SeleniumSharper.Managers.Enums;
-using SeleniumSharper.Managers.Interfaces;
-using System;
 using System.Runtime.InteropServices;
 
 namespace SeleniumSharper.Managers;
 
-public sealed class ChromeDriverManager : IWebDriverSetupManager<ChromeOptions, ChromeDriverService>
+public sealed class ChromeDriverManager : WebDriverManagerBase<ChromeDriver>
 {
-    public IWebDriver Setup()
+    protected override string GetVersion(VersionResolveStrategy versionStrategy, string? version)
     {
-        var driverPath = InstallBinary();
-
-        var chromeDriverService = ChromeDriverService.CreateDefaultService(driverPath);
-
-        return new ChromeDriver(chromeDriverService);
+        return versionStrategy switch
+        {
+            VersionResolveStrategy.LatestVersion => GetLatestVersion(),
+            VersionResolveStrategy.InstalledVersion => GetInstalledVersion(),
+            VersionResolveStrategy.SpecificVersion when !string.IsNullOrWhiteSpace(version) => version!,
+            VersionResolveStrategy.SpecificVersion => throw new ArgumentException("A specific version is required but none was provided.", nameof(version)),
+            _ => throw new ArgumentException($"Unknown version strategy: {versionStrategy}", nameof(versionStrategy))
+        };
     }
 
-    public IWebDriver Setup(ChromeOptions chromeOptions)
-    {
-        var driverPath = InstallBinary();
-
-        var chromeDriverService = ChromeDriverService.CreateDefaultService(driverPath);
-
-        return new ChromeDriver(chromeDriverService, chromeOptions);
-    }
-
-    public IWebDriver Setup(VersionResolveStrategy versionResolveStrategy)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IWebDriver Setup(VersionResolveStrategy versionResolveStrategy, ChromeOptions options)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IWebDriver Setup(ChromeDriverService driverService)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IWebDriver Setup(ChromeDriverService driverService, ChromeOptions driverOptions)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IWebDriver Setup(string driverVersion)
-    {
-        var fileName = GetFileName();
-
-        var downloadUrl = GetDownloadUrl(driverVersion, fileName);
-
-        var binaryPath = GetBinaryPath(driverVersion);
-
-        var driverPath = BinaryService.InstallBinary(fileName, downloadUrl, binaryPath, GetBinaryName());
-
-        var chromeDriverService = ChromeDriverService.CreateDefaultService(driverPath);
-
-        return new ChromeDriver(chromeDriverService);
-    }
-
-    public IWebDriver Setup(string driverVersion, ChromeOptions driverOptions)
-    {
-        var fileName = GetFileName();
-
-        var downloadUrl = GetDownloadUrl(driverVersion, fileName);
-
-        var binaryPath = GetBinaryPath(driverVersion);
-
-        var driverPath = BinaryService.InstallBinary(fileName, downloadUrl, binaryPath, GetBinaryName());
-
-        var chromeDriverService = ChromeDriverService.CreateDefaultService(driverPath);
-
-        return new ChromeDriver(chromeDriverService, driverOptions);
-    }
-
-    private static string GetBinaryName()
-    {
-        var suffix = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".exe" : string.Empty;
-
-        return $"chromedriver{suffix}";
-    }
-
-    private static Uri GetDownloadUrl(string version, string fileName)
-    {
-        var url = $"https://chromedriver.storage.googleapis.com/{version}/{fileName}";
-
-        return new Uri(url);
-    }
-
-    private static string GetFileName()
+    protected override string GetArchiveName()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
@@ -114,6 +40,18 @@ public sealed class ChromeDriverManager : IWebDriverSetupManager<ChromeOptions, 
         throw new PlatformNotSupportedException();
     }
 
+    protected override string GetBinaryName()
+    {
+        var suffix = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".exe" : string.Empty;
+
+        return $"chromedriver{suffix}";
+    }
+
+    protected override string GetName()
+    {
+        return "Chrome";
+    }
+
     private static string GetLatestVersion()
     {
         var url = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE";
@@ -125,29 +63,13 @@ public sealed class ChromeDriverManager : IWebDriverSetupManager<ChromeOptions, 
         return response.Trim();
     }
 
-    private static string GetBinaryPath(string version)
+    private string GetInstalledVersion()
     {
-        var architecture = Environment.Is64BitOperatingSystem ? "64" : "32";
-
-        return Path.Combine(
-            Directory.GetCurrentDirectory(),
-            "Binaries",
-            "Chrome",
-            version,
-            architecture,
-            GetBinaryName());
+        throw new NotImplementedException();
     }
 
-    private static string InstallBinary()
+    protected override string GetDownloadUrl(string version, string fileName)
     {
-        var version = GetLatestVersion();
-
-        var fileName = GetFileName();
-
-        var downloadUrl = GetDownloadUrl(version, fileName);
-
-        var binaryPath = GetBinaryPath(version);
-
-        return BinaryService.InstallBinary(fileName, downloadUrl, binaryPath, GetBinaryName());
+        return $"https://chromedriver.storage.googleapis.com/{version}/{fileName}";
     }
 }

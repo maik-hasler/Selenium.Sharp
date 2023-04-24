@@ -2,7 +2,7 @@
 
 public enum VersionResolveStrategy
 {
-    Latest,
+    LatestVersion,
     InstalledVersion,
     SpecificVersion
 }

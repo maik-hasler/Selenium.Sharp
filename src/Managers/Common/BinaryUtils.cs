@@ -1,18 +1,17 @@
-﻿using SeleniumSharper.Managers.Common;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace SeleniumSharper.Managers.Services;
+namespace SeleniumSharper.Managers.Common;
 
-public static class BinaryService
+public static class BinaryUtils
 {
-    public static string InstallBinary(string fileName, Uri downloadUrl, string binaryPath, string binaryName)
+    public static string InstallBinary(string fileName, string downloadUrl, string binaryPath, string binaryName)
     {
         var temporaryDirectory = CreateTemporaryDirectory();
 
         var archivePath = Path.Combine(temporaryDirectory.FullName, fileName);
 
-        DownloadBinary(downloadUrl, archivePath);
+        DownloadBinaryArchive(downloadUrl, archivePath);
 
         Directory.CreateDirectory(binaryPath);
 
@@ -44,11 +43,11 @@ public static class BinaryService
         return Directory.CreateDirectory(temporaryPath);
     }
 
-    public static void DownloadBinary(Uri uri, string path)
+    public static void DownloadBinaryArchive(string url, string path)
     {
         using var httpClient = new HttpClient();
 
-        var response = httpClient.GetAsync(uri).Result;
+        var response = httpClient.GetAsync(url).Result;
 
         response.EnsureSuccessStatusCode();
 
