@@ -2,23 +2,23 @@
 using SeleniumSharper.Managers.Enums;
 using System.Runtime.InteropServices;
 
-namespace SeleniumSharper.Managers;
+namespace SeleniumSharper.Managers.Implementations;
 
-public sealed class ChromeDriverManager : WebDriverManagerBase<ChromeDriver>
+public sealed class ChromeDriverManager : WebDriverManager<ChromeDriver>
 {
-    protected override string GetVersion(VersionResolveStrategy versionStrategy, string? version)
+    protected override string GetVersion(VersionResolveStrategy versionResolveStrategy, string? version)
     {
-        return versionStrategy switch
+        return versionResolveStrategy switch
         {
             VersionResolveStrategy.LatestVersion => GetLatestVersion(),
             VersionResolveStrategy.InstalledVersion => GetInstalledVersion(),
             VersionResolveStrategy.SpecificVersion when !string.IsNullOrWhiteSpace(version) => version!,
             VersionResolveStrategy.SpecificVersion => throw new ArgumentException("A specific version is required but none was provided.", nameof(version)),
-            _ => throw new ArgumentException($"Unknown version strategy: {versionStrategy}", nameof(versionStrategy))
+            _ => throw new ArgumentException($"Unknown version strategy: {versionResolveStrategy}", nameof(versionResolveStrategy))
         };
     }
 
-    protected override string GetArchiveName()
+    private static string GetArchiveName()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
@@ -68,8 +68,10 @@ public sealed class ChromeDriverManager : WebDriverManagerBase<ChromeDriver>
         throw new NotImplementedException();
     }
 
-    protected override string GetDownloadUrl(string version, string fileName)
+    protected override string GetDownloadUrl(string version)
     {
-        return $"https://chromedriver.storage.googleapis.com/{version}/{fileName}";
+        var archiveName = GetArchiveName();
+
+        return $"https://chromedriver.storage.googleapis.com/{version}/{archiveName}";
     }
 }

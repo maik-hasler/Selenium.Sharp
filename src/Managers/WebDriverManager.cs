@@ -1,31 +1,62 @@
 ﻿using OpenQA.Selenium;
+using SeleniumSharper.Managers.Common;
 using SeleniumSharper.Managers.Enums;
+using SeleniumSharper.Managers.Interfaces;
 
 namespace SeleniumSharper.Managers;
 
-public static class WebDriverManager
+public abstract class WebDriverManager<T> : IWebDriverManager<T>
+    where T : IWebDriver
 {
-    public static string Setup<T>(VersionResolveStrategy versionResolveStrategy, string? version)
-        where T : IWebDriver
-    {
-        var webDriverManager = FindWebDriverManager<T>();
+    private VersionResolveStrategy VersionResolveStrategy { get; set; } = VersionResolveStrategy.LatestVersion;
 
-        return webDriverManager.Setup(versionResolveStrategy, version);
+    private string Version { get; set; } = string.Empty;
+
+    public string Setup()
+    {
+        var versionToDownload = GetVersion(VersionResolveStrategy, Version);
+
+        var downloadUrl = GetDownloadUrl(versionToDownload);
+
+        var archiveName = Path.GetFileName(downloadUrl);
+
+        var binaryPath = GetBinaryPath(versionToDownload);
+
+        return BinaryUtils.InstallBinary(archiveName, downloadUrl, binaryPath, GetBinaryName());
     }
 
-    private static IWebDriverManager<T> FindWebDriverManager<T>()
-        where T : IWebDriver
+    public WebDriverManager<T> WithVersion(VersionResolveStrategy versionResolveStrategy)
     {
-        var desiredManagerType = typeof(IWebDriverManager<>).MakeGenericType(typeof(T));
+        VersionResolveStrategy = versionResolveStrategy;
 
-        var managerType = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(x => x.GetTypes())
-            .FirstOrDefault(x => x.IsClass && !x.IsAbstract && desiredManagerType.IsAssignableFrom(x))
-            ?? throw new NotSupportedException($"WebDriver type '{typeof(T)}' is not supported.");
-
-        var managerInstance = Activator.CreateInstance(managerType)
-            ?? throw new NullReferenceException($"Failed to create instance of '{managerType}'.");
-
-        return (IWebDriverManager<T>)managerInstance;
+        return this;
     }
+
+    public WebDriverManager<T> WithVersion(string version)
+    {
+        Version = version;
+
+        return this;
+    }
+
+    private string GetBinaryPath(string version)
+    {
+        var architecture = Environment.Is64BitOperatingSystem ? "64" : "32";
+
+        return Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "Binaries",
+            GetName(),
+            version,
+            architecture,
+            GetBinaryName());
+    }
+
+    protected abstract string GetDownloadUrl(string version);
+
+    protected abstract string GetBinaryName();
+
+    protected abstract string GetName();
+
+    protected abstract string GetVersion(VersionResolveStrategy versionResolveStrategy, string? version);
 }

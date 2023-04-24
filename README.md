@@ -9,6 +9,8 @@ SeleniumSharper is a powerful, lightweight tool that makes working with Selenium
 - [Table of contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
+    - [Wait conditions](#wait-conditions)
+    - [WebDriverManager](#webdrivermanager)
 - [Credits](#credits)
     - [WebDriverManager.Net](#webdrivermanagernet)
     - [DotNetSeleniumExtras](#dotnetseleniumextras)
@@ -25,10 +27,18 @@ dotnet add package SeleniumSharper
 Either commands, from Package Manager Console or .NET Core CLI, will download and install SeleniumSharper and all required dependencies.
 
 # Usage
+## Wait conditions
 ```csharp
 var title = driver.Wait(30)
     .Until(ctx => ctx.Title)
     .Satisfies(title => title.Equals("My awesome title"));
+```
+## WebDriverManager
+```csharp
+var driverPath = WebDriverManagerFactory
+    .For<ChromeDriver>()
+    .WithVersion(VersionResolveStrategy.LatestVersion)
+    .Setup();
 ```
 # Credits
 I would like to give credit to the following resources that have inspired this project.
