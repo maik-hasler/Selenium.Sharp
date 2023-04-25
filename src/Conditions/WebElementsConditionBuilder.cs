@@ -5,21 +5,21 @@ namespace SeleniumSharper.Conditions;
 
 public sealed class WebElementsConditionBuilder<TSearchContext, TSearchResult>
     where TSearchContext : ISearchContext
-    where TSearchResult : ReadOnlyCollection<IWebElement>
+    where TSearchResult : IReadOnlyCollection<IWebElement>
 {
     private readonly ContextualWait<TSearchContext> _contextualWait;
 
-    private readonly Func<TSearchContext, ReadOnlyCollection<IWebElement>> _action;
+    private readonly Func<TSearchContext, IReadOnlyCollection<IWebElement>> _action;
 
-    public WebElementsConditionBuilder(ContextualWait<TSearchContext> fluentWait, Func<TSearchContext, ReadOnlyCollection<IWebElement>> action)
+    public WebElementsConditionBuilder(ContextualWait<TSearchContext> fluentWait, Func<TSearchContext, IReadOnlyCollection<IWebElement>> action)
     {
         _contextualWait = fluentWait;
         _action = action;
     }
 
-    public ReadOnlyCollection<IWebElement>? AreVisible()
+    public IReadOnlyCollection<IWebElement>? AreVisible()
     {
-        ReadOnlyCollection<IWebElement>? webElements = null;
+        IReadOnlyCollection<IWebElement>? webElements = null;
 
         try
         {
@@ -38,7 +38,7 @@ public sealed class WebElementsConditionBuilder<TSearchContext, TSearchResult>
         }
     }
 
-    public TResult Satisfy<TResult>(Func<ReadOnlyCollection<IWebElement>, TResult> condition)
+    public TResult Satisfy<TResult>(Func<IReadOnlyCollection<IWebElement>, TResult> condition)
     {
         return _contextualWait.Wait.Until(ctx =>
         {

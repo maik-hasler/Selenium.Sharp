@@ -32,4 +32,9 @@ public sealed class ContextualWait<TSearchContext>
     {
         return new StringConditionBuilder<TSearchContext, string>(this, action);
     }
+
+    public WebElementsConditionBuilder<TSearchContext, IReadOnlyCollection<IWebElement>> Until(Func<TSearchContext, IReadOnlyCollection<IWebElement>> action)
+    {
+        return new WebElementsConditionBuilder<TSearchContext, IReadOnlyCollection<IWebElement>>(this, action);
+    }
 }
