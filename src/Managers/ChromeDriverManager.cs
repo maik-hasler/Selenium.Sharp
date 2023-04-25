@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace SeleniumSharper.Managers.Implementations;
 
-public sealed class ChromeDriverManager : WebDriverManager<ChromeDriver>
+public sealed class ChromeDriverManager : WebDriverManagerBase<ChromeDriver>
 {
     protected override string GetVersion(VersionResolveStrategy versionResolveStrategy, string? version)
     {

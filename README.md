@@ -34,10 +34,21 @@ var title = driver.Wait(30)
     .Satisfies(title => title.Equals("My awesome title"));
 ```
 ## WebDriverManager
+Here is an example of how to use `WebDriverManager` to setup a specific type of driver with a custom configuration:
 ```csharp
-var driverPath = WebDriverManagerFactory
+var webDriverPath = WebDriverManager
     .For<ChromeDriver>()
-    .WithVersion(VersionResolveStrategy.LatestVersion)
+    .With(config =>
+    {
+        config.VersionResolveStrategy = VersionResolveStrategy.SpecificVersion;
+        config.Version = "113.0.5672.24";
+    })
+    .Setup();
+```
+You can also use the default configuration if you don't need to set any custom options:
+```csharp
+var webDriverPath = WebDriverManager
+    .For<ChromeDriver>()
     .Setup();
 ```
 # Credits

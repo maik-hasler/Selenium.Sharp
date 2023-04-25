@@ -1,62 +1,23 @@
 ﻿using OpenQA.Selenium;
-using SeleniumSharper.Managers.Common;
-using SeleniumSharper.Managers.Enums;
 using SeleniumSharper.Managers.Interfaces;
 
 namespace SeleniumSharper.Managers;
 
-public abstract class WebDriverManager<T> : IWebDriverManager<T>
-    where T : IWebDriver
+public static class WebDriverManager
 {
-    private VersionResolveStrategy VersionResolveStrategy { get; set; } = VersionResolveStrategy.LatestVersion;
-
-    private string Version { get; set; } = string.Empty;
-
-    public string Setup()
+    public static IWebDriverManager<T> For<T>()
+        where T : IWebDriver
     {
-        var versionToDownload = GetVersion(VersionResolveStrategy, Version);
+        var desiredManagerType = typeof(IWebDriverManager<>).MakeGenericType(typeof(T));
 
-        var downloadUrl = GetDownloadUrl(versionToDownload);
+        var managerType = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(x => x.GetTypes())
+            .FirstOrDefault(x => x.IsClass && !x.IsAbstract && desiredManagerType.IsAssignableFrom(x))
+            ?? throw new NotSupportedException($"WebDriver type '{typeof(T)}' is not supported.");
 
-        var archiveName = Path.GetFileName(downloadUrl);
+        var managerInstance = Activator.CreateInstance(managerType)
+            ?? throw new NullReferenceException($"Failed to create instance of '{managerType}'.");
 
-        var binaryPath = GetBinaryPath(versionToDownload);
-
-        return BinaryUtils.InstallBinary(archiveName, downloadUrl, binaryPath, GetBinaryName());
+        return (IWebDriverManager<T>)managerInstance;
     }
-
-    public WebDriverManager<T> WithVersion(VersionResolveStrategy versionResolveStrategy)
-    {
-        VersionResolveStrategy = versionResolveStrategy;
-
-        return this;
-    }
-
-    public WebDriverManager<T> WithVersion(string version)
-    {
-        Version = version;
-
-        return this;
-    }
-
-    private string GetBinaryPath(string version)
-    {
-        var architecture = Environment.Is64BitOperatingSystem ? "64" : "32";
-
-        return Path.Combine(
-            Directory.GetCurrentDirectory(),
-            "Binaries",
-            GetName(),
-            version,
-            architecture,
-            GetBinaryName());
-    }
-
-    protected abstract string GetDownloadUrl(string version);
-
-    protected abstract string GetBinaryName();
-
-    protected abstract string GetName();
-
-    protected abstract string GetVersion(VersionResolveStrategy versionResolveStrategy, string? version);
 }

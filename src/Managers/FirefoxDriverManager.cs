@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace SeleniumSharper.Managers;
 
-public sealed class FirefoxDriverManager : WebDriverManager<FirefoxDriver>
+public sealed class FirefoxDriverManager : WebDriverManagerBase<FirefoxDriver>
 {
     private static string GetArchiveName(string version)
     {
