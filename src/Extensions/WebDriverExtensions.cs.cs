@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace SeleniumSharper;
+namespace SeleniumSharper.Extensions;
 
 public static class WebDriverExtensions
 {

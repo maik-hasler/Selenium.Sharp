@@ -1,4 +1,4 @@
-﻿namespace SeleniumSharper;
+﻿namespace SeleniumSharper.Enums;
 
 public enum DomEvent
 {

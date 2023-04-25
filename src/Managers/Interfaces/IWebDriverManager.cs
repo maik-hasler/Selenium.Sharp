@@ -2,10 +2,10 @@
 
 namespace SeleniumSharper.Managers.Interfaces;
 
-public interface IWebDriverManager<TOptions>
-    where TOptions : DriverOptions
+public interface IWebDriverManager<T>
+    where T : IWebDriver
 {
-    public IWebDriver Setup();
+    public string Setup();
 
-    public IWebDriver Setup(TOptions options);
+    public WebDriverManagerBase<T> With(Action<WebDriverManagerConfiguration> configure);
 }

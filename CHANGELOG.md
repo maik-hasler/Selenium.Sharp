@@ -4,7 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/maik-hasler/SeleniumSharper/compare/v1.1.0...HEAD)
+## [Unreleased](https://github.com/maik-hasler/SeleniumSharper/compare/v1.2.0...HEAD)
+
+## [v1.2.0](https://github.com/maik-hasler/SeleniumSharper/releases/tag/v1.2.0)
+**Published:** 25th April 2023
+### Added
+- Static class `WebDriverManager` to simplify the download / installation process
+- Support for `FirefoxDriver`
+- Option to provide a custom configuration
+### Fixed
+- `ContextualWait<TSearchContext>` can now return `WebElementsConditionBuilder<TSearchContext, TSearchResult>`
+### Changed
+- `IWebDriverManager` is no longer returning the instance of `IWebDriver`. Instead it retuns the path to the downloaded driver binary.
+- Changed many class and method implementations related to `IWebDriverManager`
 
 ## [v1.1.0](https://github.com/maik-hasler/SeleniumSharper/releases/tag/v1.1.0)
 **Published:** 21th April 2023
