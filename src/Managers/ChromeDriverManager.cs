@@ -2,7 +2,7 @@
 using SeleniumSharper.Managers.Enums;
 using System.Runtime.InteropServices;
 
-namespace SeleniumSharper.Managers.Implementations;
+namespace SeleniumSharper.Managers;
 
 public sealed class ChromeDriverManager : WebDriverManagerBase<ChromeDriver>
 {

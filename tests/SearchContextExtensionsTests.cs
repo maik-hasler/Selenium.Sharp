@@ -1,5 +1,7 @@
 ﻿using Moq;
 using OpenQA.Selenium;
+using SeleniumSharper.Conditions;
+using SeleniumSharper.Extensions;
 using Xunit;
 
 namespace SeleniumSharper.Test;

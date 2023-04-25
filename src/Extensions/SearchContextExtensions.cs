@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
+using SeleniumSharper.Conditions;
 
-namespace SeleniumSharper;
+namespace SeleniumSharper.Extensions;
 
 public static class SearchContextExtensions
 {

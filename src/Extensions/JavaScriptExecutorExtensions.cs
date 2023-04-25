@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
+using SeleniumSharper.Enums;
 
-namespace SeleniumSharper;
+namespace SeleniumSharper.Extensions;
 
 public static class JavaScriptExecutorExtensions
 {
