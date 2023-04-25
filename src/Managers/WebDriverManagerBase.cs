@@ -20,7 +20,36 @@ public abstract class WebDriverManagerBase<T> : IWebDriverManager<T>
 
         var binaryPath = GetBinaryPath(versionToDownload);
 
-        return BinaryUtils.InstallBinary(archiveName, downloadUrl, binaryPath, GetBinaryName());
+        var driverPath = BinaryUtils.InstallBinary(archiveName, downloadUrl, binaryPath, GetBinaryName());
+
+        if (_configuration.AddToPath)
+        {
+            SetPathEnviromentVariable(driverPath);
+        }
+
+        return driverPath;
+    }
+
+    private static void SetPathEnviromentVariable(string path)
+    {
+        if (!Directory.Exists(path))
+        {
+            throw new ArgumentException("Invalid path");
+        }
+
+        const string pathVariableName = "PATH";
+
+        var pathVariable = Environment.GetEnvironmentVariable(pathVariableName, EnvironmentVariableTarget.Process)
+            ?? throw new ArgumentNullException(pathVariableName, $"Can't get {pathVariableName} variable");
+
+        if (pathVariable.Contains(path))
+        {
+            return;
+        }
+
+        var newPathVariable = Path.Combine(path, pathVariable);
+
+        Environment.SetEnvironmentVariable(pathVariableName, newPathVariable, EnvironmentVariableTarget.Process);
     }
 
     public WebDriverManagerBase<T> With(Action<WebDriverManagerConfiguration> configure)
